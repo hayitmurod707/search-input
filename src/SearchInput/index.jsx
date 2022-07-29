@@ -3,33 +3,31 @@ import React, { useState } from 'react';
 import Search from 'react-select';
 import Options from './Options';
 import StyledElement from './StyledElement';
+// info color #0000ff
+// light color #ffffff
+// muted color #808080
+// text color #000000
 const SearchInput = () => {
 	const [options, setOptions] = useState([]);
-	const [value] = useState({
-		isDisabled: true,
-		label: '',
-		value: '',
-	});
-	const [name, setName] = useState('');
+	const [inputValue, setInputValue] = useState('');
 	const [loading, setLoading] = useState(false);
-	const onInputChange = async (name, { action }) => {
+	const onInputChange = async (inputValue, { action }) => {
 		if (action !== 'input-blur' && action !== 'menu-close') {
-			setName(name);
+			setInputValue(inputValue);
 			await setLoading(true);
-			if (name?.length) {
+			if (inputValue?.length) {
 				axios(
-					`https://jsonplaceholder.typicode.com/comments?postId=${name}`
+					`https://jsonplaceholder.typicode.com/comments?postId=${inputValue}`
 				)
 					.then(response => {
-						const results = response?.data;
-						const options =
-							Array.isArray(results) && results?.length ? results : [];
+						const data = response?.data;
+						const options = Array.isArray(data) ? data : [];
 						setOptions(options);
 					})
 					.catch(() => setOptions([]))
-					.finally(() => setLoading(true));
+					.finally(() => setLoading(false));
 			} else {
-				setLoading(true);
+				setLoading(false);
 				setOptions([]);
 			}
 		}
@@ -40,12 +38,11 @@ const SearchInput = () => {
 			<Search
 				{...Options}
 				filterOption={() => options}
-				inputValue={name}
+				inputValue={inputValue}
 				onBlur={() => setOptions([])}
 				onChange={data => console.log(data)}
 				onInputChange={onInputChange}
 				options={options}
-				value={value}
 			/>
 		</StyledElement>
 	);

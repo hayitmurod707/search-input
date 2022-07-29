@@ -1,7 +1,9 @@
 import { any, bool, object, shape, string } from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import Logo from './react.png';
 const StyledElement = styled.li`
+	align-items: center;
 	cursor: pointer;
 	display: flex;
 	overflow: hidden;
@@ -11,7 +13,7 @@ const StyledElement = styled.li`
 	&:hover {
 		background: #f7f8fc;
 	}
-	&:before {
+	&:not(:last-child):before {
 		background: rgba(115, 141, 163, 0.1);
 		bottom: 0;
 		content: '';
@@ -21,71 +23,68 @@ const StyledElement = styled.li`
 		width: calc(100% - 32px);
 	}
 	&[data-focus='focus'] {
-		background-color: red;
+		background-color: #f7f8fc;
 	}
 	&[data-focus='blur'] {
-		background-color: transparent;
+		background-color: initial;
 	}
-	& .drug-image {
-		height: 64px;
-		margin: 0 8px 0 0;
-		min-height: 64px;
-		min-width: 64px;
-		width: 64px;
+	& .image {
+		height: 32px;
+		margin: 0 12px 0 0;
+		width: 32px;
+		& img {
+			width: 100%;
+			height: 100%;
+		}
 	}
-	& h4 {
-		align-items: center;
-		display: flex;
-		font-size: 16px;
-		margin: 8px 0;
-		& span {
-			display: inline-block;
+	& .info {
+		width: calc(100% - 44px);
+		& h4 {
+			align-items: center;
+			display: flex;
+			font-size: 17px;
+			font-weight: 500;
+			margin: 0 0 4px 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
 			white-space: nowrap;
+			width: 100%;
 		}
-		& .search-drug-name {
-			background: rgba(6, 27, 52, 0.9) !important;
-			border-radius: 4px !important;
-			color: #ffffff !important;
-			margin: 0 1px;
-			padding: 3px 3px;
+		& h5 {
+			color: #808080;
+			font-size: 16px;
+			font-weight: 500;
+			margin: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			width: 100%;
 		}
-	}
-	& h5 {
-		font-size: 16px;
-		font-weight: 400;
-		margin: 0;
 	}
 `;
-const Option = ({
-	data: { image, name, body, email },
-	innerProps,
-	innerRef,
-	isFocused,
-}) => (
+const Option = ({ data: { email, name }, innerProps, innerRef, isFocused }) => (
 	<StyledElement
-		data-focus={isFocused ? 'focus' : 'blue'}
-		title={name}
-		ref={innerRef}
 		{...innerProps}
+		data-focus={isFocused ? 'focus' : 'blue'}
+		ref={innerRef}
+		title={name}
 	>
-		<div className="drug-image">
-			<img alt="drug" height="64" src={image} width="64" />
+		<div className="image">
+			<img alt="react" src={Logo} />
 		</div>
-		<div>
-			<h4>
-				{email} {name}
-			</h4>
-			<h5>{body}</h5>
+		<div className="info">
+			<h4>{email}</h4>
+			<h5>{name}</h5>
 		</div>
 	</StyledElement>
 );
 Option.defaultProps = {
-	data: { name: '', body: '', email: '' },
+	data: { email: '', name: '' },
 	innerProps: {},
 	isFocused: false,
 };
 Option.propTypes = {
-	data: shape({ name: string, body: string, email: string }),
+	data: shape({ email: string, name: string }),
 	innerProps: object,
 	innerRef: any,
 	isFocused: bool,

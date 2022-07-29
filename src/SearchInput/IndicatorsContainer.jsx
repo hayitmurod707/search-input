@@ -3,12 +3,13 @@ import styled from 'styled-components';
 const StyledButton = styled.button`
 	background: transparent;
 	border: none;
-	cursor: pointer;
-	height: 100%;
+	height: 46px;
 	outline: none;
 	padding: 0;
-	width: 51px;
-	/* z-index: -1; */
+	width: 46px;
+	& svg {
+		margin: 0 0 -4px 3px;
+	}
 `;
 const IndicatorsContainer = () => (
 	<StyledButton>
